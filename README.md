@@ -1,164 +1,209 @@
-# Lab 5: Static Code Analysis - Inventory System
+Lab 5: Static Code Analysis - Inventory System
+Overview
 
-## Overview
-This repository contains the solution for Lab 5: Static Code Analysis. The project demonstrates the use of static analysis tools (Pylint, Bandit, and Flake8) to improve Python code quality, security, and style.
+This repository contains the solution for Lab 5: Static Code Analysis. The project demonstrates the use of Pylint, Bandit, and Flake8 to enhance Python code quality, improve security, and ensure adherence to style conventions.
 
-## Repository Contents
-- `inventory_system.py` - Original inventory system with issues
-- `clean_inventory_system.py` - Fixed and improved version
-- `pylint_report.txt` - Pylint analysis report (clean file)
-- `bandit_report.txt` - Bandit security analysis report (clean file)
-- `flake8_report.txt` - Flake8 style analysis report (clean file)
-- `README.md` - This file
+Repository Contents
 
-## Known Issues Table
+inventory_system.py – Original version containing issues
 
-| Issue Type | Tool | Line(s) | Severity | Description | Fix Approach |
-|------------|------|---------|----------|-------------|--------------|
-| Dangerous default value | Pylint | 8 | High | Mutable default argument `logs=[]` shared across function calls | Changed default to `None` and initialized inside function |
-| Bare except | Pylint/Flake8 | 19 | High | Overly broad exception handler catches all errors | Replaced with specific exception types `(KeyError, TypeError)` |
-| Security - eval() | Bandit | 59 | Medium | Use of dangerous `eval()` function allows arbitrary code execution | Removed dangerous eval() call entirely |
-| Unused import | Pylint/Flake8 | 2 | Low | `logging` module imported but never used | Removed unused import |
-| Missing module docstring | Pylint | 1 | Low | No module-level documentation | Added comprehensive module docstring |
-| Missing function docstrings | Pylint | Multiple | Low | Functions lack documentation | Added docstrings to all functions |
-| Non-snake_case naming | Pylint | Multiple | Low | Function names don't follow PEP 8 convention | Renamed to snake_case (e.g., `addItem` → `add_item`) |
-| String formatting | Pylint | 12 | Low | Old-style string formatting with `%` | Replaced with f-strings for better readability |
-| Missing encoding | Pylint | 26, 32 | Low | `open()` called without explicit encoding | Added `encoding="utf-8"` parameter |
-| Context manager | Pylint | 26, 32 | Low | Files opened without using `with` statement | Wrapped file operations in `with` context manager |
-| PEP 8 blank lines | Flake8 | Multiple | Low | Missing blank lines between functions | Added 2 blank lines between top-level functions |
-| Missing final newline | Pylint/Flake8 | 61 | Low | File doesn't end with newline | Added newline at end of file |
-| Input validation | Custom | 8, 50 | Medium | Functions accept invalid types without validation | Added type checking and validation |
-| Error handling | Custom | 14-20 | Medium | Poor error messages and silent failures | Added informative error messages |
+clean_inventory_system.py – Corrected and optimized version
 
-**Total Issues Fixed: 14**
+pylint_report.txt – Pylint analysis report (clean version)
 
-## Improvements Made
+bandit_report.txt – Bandit security analysis report (clean version)
 
-### 1. Security Improvements
-- Removed dangerous `eval()` function call
-- Added proper exception handling with specific exception types
-- Added input validation to prevent type errors
+flake8_report.txt – Flake8 style analysis report (clean version)
 
-### 2. Code Quality Improvements
-- Added comprehensive docstrings to all functions
-- Renamed functions to follow snake_case convention
-- Replaced old-style string formatting with f-strings
-- Removed unused imports
-- Added type validation for function parameters
+README.md – This documentation file
 
-### 3. Style Improvements (PEP 8 Compliance)
-- Added proper spacing (2 blank lines between functions)
-- Added final newline at end of file
-- Used context managers (`with` statement) for file operations
-- Specified encoding for file operations
-- Added module docstring
+Known Issues Table
+Issue Type	Tool	Line(s)	Severity	Description	Fix Approach
+Mutable default argument	Pylint	8	High	Function used mutable default logs=[], shared across calls	Changed default to None and initialized inside the function
+Bare except	Pylint/Flake8	19	High	Catch-all exception handler used	Replaced with specific exceptions (KeyError, TypeError)
+Security - eval()	Bandit	59	Medium	Use of eval() enables arbitrary code execution	Removed eval() entirely
+Unused import	Pylint/Flake8	2	Low	Unused logging import	Removed unused import
+Missing module docstring	Pylint	1	Low	No top-level documentation	Added a descriptive module docstring
+Missing function docstrings	Pylint	Multiple	Low	Functions lacked documentation	Added clear docstrings for each function
+Non-snake_case names	Pylint	Multiple	Low	Function names not PEP 8 compliant	Renamed functions (e.g., addItem → add_item)
+String formatting	Pylint	12	Low	Old % formatting used	Replaced with f-strings
+Missing encoding	Pylint	26, 32	Low	open() used without specifying encoding	Added encoding="utf-8"
+Context manager	Pylint	26, 32	Low	Files not opened using context manager	Used with statement for file handling
+PEP 8 blank lines	Flake8	Multiple	Low	Missing blank lines between functions	Added two blank lines between top-level functions
+Missing final newline	Pylint/Flake8	61	Low	No newline at end of file	Added final newline
+Input validation	Custom	8, 50	Medium	Functions accepted invalid data types	Added type checking and input validation
+Error handling	Custom	14–20	Medium	Poor or missing error messages	Added detailed and informative error messages
 
-### 4. Robustness Improvements
-- Fixed mutable default argument bug
-- Added error handling for file not found scenarios
-- Added informative error messages
-- Used `.get()` method for safer dictionary access
-- Added `if __name__ == "__main__":` guard
+Total Issues Fixed: 14
 
-## Analysis Results
+Improvements Made
+1. Security Enhancements
 
-### Pylint Score
-- **Original**: 4.60/10
-- **Clean Version**: 10.00/10
+Removed the unsafe eval() call
 
-### Bandit Security Issues
-- **Original**: 2 issues (1 Medium, 1 Low)
-- **Clean Version**: 0 issues
+Introduced specific exception handling
 
-### Flake8 Style Issues
-- **Original**: 12 issues
-- **Clean Version**: 0 issues
+Added input validation to prevent invalid types
 
-## Reflection
+2. Code Quality Improvements
 
-### 1. Which issues were the easiest to fix, and which were the hardest? Why?
+Added descriptive docstrings for all functions
 
-**Easiest to fix:**
-- Style issues like missing blank lines, final newlines, and naming conventions were straightforward to fix as they only required formatting changes
-- Removing unused imports was a simple deletion
-- Converting string formatting from `%` to f-strings was a simple find-and-replace operation
+Adopted snake_case naming convention
 
-**Hardest to fix:**
-- The mutable default argument bug required understanding how Python handles default arguments and their persistence across function calls
-- Proper exception handling required understanding what specific exceptions could occur and handling them appropriately
-- Input validation required thinking through all possible edge cases and invalid inputs
+Updated string formatting to f-strings
 
-### 2. Did the static analysis tools report any false positives? If so, describe one example.
+Removed unused imports
 
-The `global-statement` warning from Pylint (line 27) could be considered somewhat of a false positive in this context. While using global variables is generally discouraged, for a simple inventory system demonstration, it's an acceptable design choice. However, I kept the warning suppressed with a comment as it's intentional in this case.
+Added type validation for parameters
 
-All other warnings were legitimate issues that improved code quality when addressed.
+3. Style and PEP 8 Compliance
 
-### 3. How would you integrate static analysis tools into your actual software development workflow?
+Added proper spacing between functions
 
-**Pre-commit hooks:**
-- Configure Git hooks to run Flake8 and Pylint before each commit
-- Prevent commits if critical issues are found
+Ensured file ends with a newline
 
-**CI/CD Pipeline:**
-- Add static analysis as a required step in GitHub Actions/Jenkins
-- Run Pylint, Bandit, and Flake8 on every pull request
-- Set minimum quality thresholds (e.g., Pylint score > 8.0)
-- Block merges if security issues are detected by Bandit
+Used with statements for safe file operations
 
-**IDE Integration:**
-- Install Pylint, Flake8 extensions in VS Code
-- Configure real-time linting to catch issues while coding
-- Set up auto-formatting with Black or autopep8
+Specified file encoding (utf-8)
 
-**Regular Code Reviews:**
-- Review static analysis reports weekly
-- Address technical debt incrementally
-- Track code quality metrics over time
+Included a comprehensive module docstring
 
-### 4. What tangible improvements did you observe in the code quality, readability, or potential robustness after applying the fixes?
+4. Robustness and Reliability
 
-**Readability:**
-- F-strings make output formatting much clearer and easier to understand
-- Descriptive function names (snake_case) are more Pythonic and readable
-- Docstrings provide immediate context about what each function does
-- Proper spacing makes the code structure clearer
+Fixed mutable default argument issue
 
-**Robustness:**
-- Input validation prevents crashes from invalid data types
-- Specific exception handling prevents silent failures
-- Context managers ensure files are properly closed even if errors occur
-- Fixed mutable default argument prevents subtle bugs from shared state
+Implemented handling for missing files
 
-**Maintainability:**
-- Comprehensive documentation makes future modifications easier
-- Consistent style reduces cognitive load when reading code
-- Proper error messages help with debugging
+Improved clarity of error messages
 
-**Security:**
-- Removal of `eval()` eliminates a major security vulnerability
-- Better exception handling prevents information leakage through error messages
+Used .get() for safe dictionary access
 
-The code went from a 4.60/10 to a perfect 10/10 on Pylint, with zero security issues and complete PEP 8 compliance. This demonstrates the significant value that static analysis tools provide in creating professional, production-ready code.
+Added the if __name__ == "__main__": guard
 
-## How to Run
+Analysis Results
+Pylint Score
 
-1. Install dependencies:
-```bash
+Original: 4.60/10
+
+Clean Version: 10.00/10
+
+Bandit Security Issues
+
+Original: 2 issues (1 Medium, 1 Low)
+
+Clean Version: 0 issues
+
+Flake8 Style Issues
+
+Original: 12 issues
+
+Clean Version: 0 issues
+
+Reflection
+1. Which issues were easiest and hardest to fix?
+
+Easiest:
+
+Style-related issues like spacing, naming conventions, and final newlines were simple formatting changes.
+
+Removing unused imports and updating string formatting to f-strings were quick fixes.
+
+Hardest:
+
+Fixing the mutable default argument required understanding how Python handles default parameters and memory.
+
+Refining exception handling involved identifying specific error types.
+
+Implementing input validation required considering all potential invalid inputs.
+
+2. Were there any false positives?
+
+One minor example was the global-statement warning from Pylint (line 27). While using global variables is generally discouraged, it was acceptable for this small demo program. The warning was suppressed intentionally with a comment.
+All other warnings represented valid improvements.
+
+3. How would static analysis tools be integrated into a development workflow?
+
+Pre-commit Hooks:
+
+Run Flake8 and Pylint automatically before each commit.
+
+Prevent commits if major issues are detected.
+
+CI/CD Integration:
+
+Add Pylint, Bandit, and Flake8 checks in GitHub Actions or Jenkins.
+
+Enforce thresholds (e.g., Pylint score > 8.0).
+
+Block merges with unresolved security issues.
+
+IDE Integration:
+
+Use Pylint and Flake8 extensions in VS Code for real-time linting.
+
+Configure auto-formatting using Black or autopep8.
+
+Code Review Routine:
+
+Review static analysis reports weekly.
+
+Incrementally reduce technical debt.
+
+Track code quality over time.
+
+4. What improvements were observed after applying the fixes?
+
+Readability:
+
+F-strings improved clarity of output.
+
+Snake_case naming and spacing made the code more Pythonic.
+
+Docstrings provided clear context and purpose.
+
+Robustness:
+
+Input validation prevented runtime crashes.
+
+Specific exception handling avoided silent failures.
+
+Context managers ensured proper file closure.
+
+Mutable default argument issue eliminated shared-state bugs.
+
+Maintainability:
+
+Consistent style and documentation simplify future updates.
+
+Clear error messages assist in debugging.
+
+Security:
+
+Removing eval() closed a critical vulnerability.
+
+Better error handling prevented information leakage.
+
+Overall, the refactored code improved from 4.60/10 to a perfect 10/10 on Pylint, achieved zero security warnings, and became fully PEP 8 compliant — illustrating the practical value of static analysis in producing professional, maintainable, and secure code.
+
+How to Run
+
+Install required dependencies:
+
 pip install pylint bandit flake8
-```
 
-2. Run the clean inventory system:
-```bash
+
+Run the cleaned inventory system:
+
 python clean_inventory_system.py
-```
 
-3. Run static analysis:
-```bash
+
+Perform static analysis:
+
 pylint clean_inventory_system.py
 bandit clean_inventory_system.py
 flake8 clean_inventory_system.py
-```
 
-## Author
+Author
+
 T Aniruddha (PES1UG23AM332)
